@@ -8,7 +8,7 @@ from torchvision import models
 
 class ResNet18(nn.Module):
     def __init__(self, num_classes=500):
-        super(Net, self).__init__()
+        super(ResNet18, self).__init__()
         self.model = models.resnet18(pretrained=True)
         # Remplace le dernier layer pour correspondre aux 500 classes
         self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
