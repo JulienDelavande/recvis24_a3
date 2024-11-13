@@ -1,7 +1,7 @@
 """Python file to instantite the model and the transform that goes with it."""
 
 from data import data_transforms, data_transforms_224, data_transforms_224_da
-from model import Net, ResNet18, ResNet50
+from model import Net, ResNet18, ResNet50, ResNet101
 
 
 class ModelFactory:
@@ -18,6 +18,8 @@ class ModelFactory:
             return ResNet18()
         if self.model_name == "resnet50":
             return ResNet50()
+        if self.model_name == "resnet101":
+            return ResNet101()
         else:
             raise NotImplementedError("Model not implemented")
 
@@ -31,7 +33,11 @@ class ModelFactory:
         if self.model_name == "resnet50":
             if self.test_mode:
                 return data_transforms_224
-            return data_transforms_224_da
+            return data_transforms_224
+        if self.model_name == "resnet101":
+            if self.test_mode:
+                return data_transforms_224
+            return data_transforms_224
         else:
             raise NotImplementedError("Transform not implemented")
 
