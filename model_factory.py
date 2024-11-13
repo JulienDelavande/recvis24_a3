@@ -1,6 +1,6 @@
 """Python file to instantite the model and the transform that goes with it."""
 
-from data import data_transforms
+from data import data_transforms, data_transforms_224
 from model import Net, ResNet18
 
 
@@ -22,7 +22,7 @@ class ModelFactory:
         if self.model_name == "basic_cnn":
             return data_transforms
         if self.model_name == "resnet18":
-            return data_transforms
+            return data_transforms_224
         else:
             raise NotImplementedError("Transform not implemented")
 
