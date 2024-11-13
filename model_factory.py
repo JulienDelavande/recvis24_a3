@@ -21,6 +21,8 @@ class ModelFactory:
     def init_transform(self):
         if self.model_name == "basic_cnn":
             return data_transforms
+        if self.model_name == "resnet18":
+            return data_transforms
         else:
             raise NotImplementedError("Transform not implemented")
 
