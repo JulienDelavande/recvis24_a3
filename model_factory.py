@@ -5,7 +5,8 @@ from model import Net, ResNet18
 
 
 class ModelFactory:
-    def __init__(self, model_name: str):
+    def __init__(self, model_name: str, test_mode: bool = False):
+        self.test_mode = test_mode
         self.model_name = model_name
         self.model = self.init_model()
         self.transform = self.init_transform()
@@ -22,6 +23,8 @@ class ModelFactory:
         if self.model_name == "basic_cnn":
             return data_transforms
         if self.model_name == "resnet18":
+            if self.test_mode:
+                return data_transforms_224
             return data_transforms_224_da
         else:
             raise NotImplementedError("Transform not implemented")

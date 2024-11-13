@@ -190,6 +190,7 @@ def main():
 
     # load model and transform
     model, data_transforms = ModelFactory(args.model_name).get_all()
+    _, data_transforms_val = ModelFactory(args.model_name, test_mode=True).get_all()
     if use_cuda:
         print("Using GPU")
         model.cuda()
@@ -204,7 +205,7 @@ def main():
         num_workers=args.num_workers,
     )
     val_loader = torch.utils.data.DataLoader(
-        datasets.ImageFolder(args.data + "/val_images", transform=data_transforms),
+        datasets.ImageFolder(args.data + "/val_images", transform=data_transforms_val),
         batch_size=args.batch_size,
         shuffle=False,
         num_workers=args.num_workers,
