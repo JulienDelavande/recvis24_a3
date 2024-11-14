@@ -47,7 +47,7 @@ class ModelFactory:
         if self.model_name == "efficientnet_b4":
             if self.test_mode:
                 return data_transforms_224
-            return data_transforms_224_da
+            return data_transforms_224
         if self.model_name == "vit_base16":
             if self.test_mode:
                 return data_transforms_224
