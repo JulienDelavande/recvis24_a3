@@ -88,6 +88,7 @@ def train(
     train_loader: torch.utils.data.DataLoader,
     use_cuda: bool,
     epoch: int,
+    criterion: torch.nn.CrossEntropyLoss,
     args: argparse.ArgumentParser,
 ) -> None:
     """Default Training Loop.
@@ -107,7 +108,6 @@ def train(
             data, target = data.cuda(), target.cuda()
         optimizer.zero_grad()
         output = model(data)
-        criterion = torch.nn.CrossEntropyLoss(reduction="mean")
         loss = criterion(output, target)
         loss.backward()
         optimizer.step()
@@ -150,16 +150,17 @@ def validation(
     model.eval()
     validation_loss = 0
     correct = 0
-    for data, target in val_loader:
-        if use_cuda:
-            data, target = data.cuda(), target.cuda()
-        output = model(data)
-        # sum up batch loss
-        criterion = torch.nn.CrossEntropyLoss(reduction="mean")
-        validation_loss += criterion(output, target).data.item()
-        # get the index of the max log-probability
-        pred = output.data.max(1, keepdim=True)[1]
-        correct += pred.eq(target.data.view_as(pred)).cpu().sum()
+    with torch.no_grad():
+        for data, target in val_loader:
+            if use_cuda:
+                data, target = data.cuda(), target.cuda()
+            output = model(data)
+            # sum up batch loss
+            criterion = torch.nn.CrossEntropyLoss(reduction="mean")
+            validation_loss += criterion(output, target).data.item()
+            # get the index of the max log-probability
+            pred = output.data.max(1, keepdim=True)[1]
+            correct += pred.eq(target.data.view_as(pred)).cpu().sum()
 
     validation_loss /= len(val_loader.dataset)
     print(
@@ -219,9 +220,10 @@ def main():
     
     # Loop over the epochs
     best_val_loss = 1e8
+    criterion = torch.nn.CrossEntropyLoss(reduction="mean")
     for epoch in range(1, args.epochs + 1):
         # training loop
-        train(model, optimizer, train_loader, use_cuda, epoch, args)
+        train(model, optimizer, train_loader, use_cuda, epoch, criterion, args)
         # validation loop
         val_loss = validation(model, val_loader, use_cuda)
         if val_loss < best_val_loss:
