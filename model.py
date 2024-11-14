@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
+from transformers import ViTModel
 
 nclasses = 500
 
@@ -51,12 +52,13 @@ class EfficientNetB4(nn.Module):
 class VitBase16(nn.Module):
     def __init__(self, num_classes=500):
         super(VitBase16, self).__init__()
-        self.model = models.vit_base_patch16_224(pretrained=True)
-        # Remplace le dernier layer pour correspondre aux 500 classes
-        self.model.head = nn.Linear(self.model.head.in_features, num_classes)
+        self.model = ViTModel.from_pretrained('google/vit-base-patch16-224-in21k')
+        # Ajouter un classificateur pour les 500 classes
+        self.classifier = nn.Linear(self.model.config.hidden_size, num_classes)
 
     def forward(self, x):
-        return self.model(x)
+        outputs = self.model(x).last_hidden_state[:, 0, :]
+        return self.classifier(outputs)
 
 
 class Net(nn.Module):
