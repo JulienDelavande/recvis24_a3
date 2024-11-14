@@ -36,6 +36,16 @@ class ResNet101(nn.Module):
 
     def forward(self, x):
         return self.model(x)
+    
+class EfficientNetB7(nn.Module):
+    def __init__(self, num_classes=500):
+        super(EfficientNetB7, self).__init__()
+        self.model = models.efficientnet_b7(pretrained=True)
+        # Remplace le dernier layer pour correspondre aux 500 classes
+        self.model._fc = nn.Linear(self.model._fc.in_features, num_classes)
+
+    def forward(self, x):
+        return self.model(x)
 
 
 class Net(nn.Module):
