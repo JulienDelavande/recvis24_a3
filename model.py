@@ -49,12 +49,45 @@ class EfficientNetB4(nn.Module):
         
     def forward(self, x):
         return self.model(x)
+    
+class EfficientNetB5(nn.Module):
+    def __init__(self, num_classes=500):
+        super(EfficientNetB5, self).__init__()
+        self.model = models.efficientnet_b5(pretrained=True)
+        # Remplace le dernier layer pour correspondre aux 500 classes
+        in_features = self.model.classifier[-1].in_features
+        self.model.classifier[-1] = nn.Linear(in_features, num_classes)
+        
+    def forward(self, x):
+        return self.model(x)
+
+class EfficientNetB6(nn.Module):
+    def __init__(self, num_classes=500):
+        super(EfficientNetB6, self).__init__()
+        self.model = models.efficientnet_b6(pretrained=True)
+        # Remplace le dernier layer pour correspondre aux 500 classes
+        in_features = self.model.classifier[-1].in_features
+        self.model.classifier[-1] = nn.Linear(in_features, num_classes)
+        
+    def forward(self, x):
+        return self.model(x)
+    
+class EfficientNetB7(nn.Module):
+    def __init__(self, num_classes=500):
+        super(EfficientNetB7, self).__init__()
+        self.model = models.efficientnet_b7(pretrained=True)
+        # Remplace le dernier layer pour correspondre aux 500 classes
+        in_features = self.model.classifier[-1].in_features
+        self.model.classifier[-1] = nn.Linear(in_features, num_classes)
+        
+    def forward(self, x):
+        return self.model(x)
 
 class EfficientNetV2M(nn.Module):
     def __init__(self, num_classes=500):
         super(EfficientNetV2M, self).__init__()
         # Charger EfficientNetV2-M depuis timm avec poids pré-entraînés
-        self.model = timm.create_model('tf_efficientnetv2_s.in21k_ft_in1k', pretrained=True)
+        self.model = timm.create_model('tf_efficientnetv2_m.in21k_ft_in1k', pretrained=True)
         # Remplacer la dernière couche pour correspondre au nombre de classes
         in_features = self.model.classifier.in_features
         self.model.classifier = nn.Linear(in_features, num_classes)
