@@ -1,6 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import ViTModel
+import timm
 
 nclasses = 500
 
@@ -45,6 +46,18 @@ class EfficientNetB4(nn.Module):
         # Remplace le dernier layer pour correspondre aux 500 classes
         in_features = self.model.classifier[-1].in_features
         self.model.classifier[-1] = nn.Linear(in_features, num_classes)
+        
+    def forward(self, x):
+        return self.model(x)
+
+class EfficientNetV2M(nn.Module):
+    def __init__(self, num_classes=500):
+        super(EfficientNetV2M, self).__init__()
+        # Charger EfficientNetV2-M depuis timm avec poids pré-entraînés
+        self.model = timm.create_model('efficientnetv2_m', pretrained=True)
+        # Remplacer la dernière couche pour correspondre au nombre de classes
+        in_features = self.model.classifier.in_features
+        self.model.classifier = nn.Linear(in_features, num_classes)
         
     def forward(self, x):
         return self.model(x)
