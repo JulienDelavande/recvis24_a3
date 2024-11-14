@@ -1,7 +1,7 @@
 """Python file to instantite the model and the transform that goes with it."""
 
 from data import data_transforms, data_transforms_224, data_transforms_224_da
-from model import Net, ResNet18, ResNet50, ResNet101, EfficientNetB4
+from model import Net, ResNet18, ResNet50, ResNet101, EfficientNetB4, VitBase16
 
 
 class ModelFactory:
@@ -22,6 +22,8 @@ class ModelFactory:
             return ResNet101()
         if self.model_name == "efficientnet_b4":
             return EfficientNetB4()
+        if self.model_name == "vit_base16":
+            return VitBase16()
         else:
             raise NotImplementedError("Model not implemented")
 
