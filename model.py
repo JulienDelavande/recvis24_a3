@@ -54,7 +54,7 @@ class EfficientNetV2M(nn.Module):
     def __init__(self, num_classes=500):
         super(EfficientNetV2M, self).__init__()
         # Charger EfficientNetV2-M depuis timm avec poids pré-entraînés
-        self.model = timm.create_model('tf_efficientnetv2_m.in21k_ft_in1k', pretrained=True)
+        self.model = timm.create_model('tf_efficientnetv2_s.in21k_ft_in1k', pretrained=True)
         # Remplacer la dernière couche pour correspondre au nombre de classes
         in_features = self.model.classifier.in_features
         self.model.classifier = nn.Linear(in_features, num_classes)
