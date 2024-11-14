@@ -42,8 +42,8 @@ class EfficientNetB7(nn.Module):
         super(EfficientNetB7, self).__init__()
         self.model = models.efficientnet_b7(pretrained=True)
         # Remplace le dernier layer pour correspondre aux 500 classes
-        self.model._fc = nn.Linear(self.model._fc.in_features, num_classes)
-
+        self.model.classifier = nn.Linear(self.model.classifier.in_features, num_classes)
+        
     def forward(self, x):
         return self.model(x)
 
