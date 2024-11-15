@@ -78,6 +78,12 @@ def opts() -> argparse.ArgumentParser:
         metavar="NW",
         help="number of workers for data loading",
     )
+    parser.add_argument(
+        "--model",
+        type=str,
+        metavar="M",
+        help="the model weighth to initialise the model architecture with. Usually it is of the form model_X.pth",
+    )
     args = parser.parse_args()
     return args
 
@@ -192,6 +198,9 @@ def main():
     # load model and transform
     model, data_transforms = ModelFactory(args.model_name).get_all()
     _, data_transforms_val = ModelFactory(args.model_name, test_mode=True).get_all()
+    if args.model is not None:
+        state_dict = torch.load(args.model)
+        model.load_state_dict(state_dict)
     if use_cuda:
         print("Using GPU")
         model.cuda()

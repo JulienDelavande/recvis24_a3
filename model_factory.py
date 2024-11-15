@@ -1,6 +1,6 @@
 """Python file to instantite the model and the transform that goes with it."""
 
-from data import data_transforms, data_transforms_224, data_transforms_224_da, data_transforms_384, data_transforms_edge, data_transforms_224_da
+from data import data_transforms, data_transforms_224, data_transforms_224_da, data_transforms_384, data_transforms_edge, data_transforms_224_da, data_transforms_400
 from model import Net, ResNet18, ResNet50, ResNet101, EfficientNetB4, VitBase16, EfficientNetV2M, EfficientNetB5, EfficientNetB6, EfficientNetB7
 
 
@@ -52,7 +52,7 @@ class ModelFactory:
             return data_transforms_224
         if self.model_name.startswith("efficientnet_b"):
             if self.test_mode:
-                return data_transforms_224
+                return data_transforms_400
             return data_transforms_224
         if self.model_name == "vit_base16":
             if self.test_mode:
