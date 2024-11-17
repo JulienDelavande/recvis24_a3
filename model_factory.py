@@ -53,8 +53,8 @@ class ModelFactory:
             return data_transforms_384
         if self.model_name.startswith("efficientnet_b"):
             if self.test_mode:
-                return data_transforms_224
-            return data_transforms_224
+                return data_transforms_384
+            return data_transforms_384
         if self.model_name == "vit_base16":
             if self.test_mode:
                 return data_transforms_224
