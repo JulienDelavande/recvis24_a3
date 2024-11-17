@@ -238,6 +238,7 @@ def main():
     )
     # Setup optimizer
     optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
     #ADAM
     #scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.1)
     #optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
@@ -250,6 +251,7 @@ def main():
         train(model, optimizer, train_loader, use_cuda, epoch, criterion, args)
         # validation loop
         val_loss = validation(model, val_loader, use_cuda)
+        scheduler.step()
         if val_loss < best_val_loss:
             # save the best model for validation
             best_val_loss = val_loss
